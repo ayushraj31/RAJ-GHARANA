@@ -1,11 +1,7 @@
-import category from './category';
-import product from './product';
-import subcategory from './subcategory';
-import siteSettings from './siteSettings'; // 🔥 Naya settings schema import kiya
+import { type SchemaTypeDefinition } from 'sanity'
+import category from './category'
+import subcategory from './subcategory'
+import product from './product'
+import siteSettings from './siteSettings'
 
-export const schemaTypes = [
-  siteSettings, // 🔥 Old 'hero' hata kar yahan 'siteSettings' register kar diya
-  category,
-  product,
-  subcategory
-];
+export const schemaTypes: SchemaTypeDefinition[] = [category, subcategory, product, siteSettings]

@@ -1,41 +1,37 @@
-export default {
+import { defineField, defineType } from 'sanity'
+
+export default defineType({
   name: 'siteSettings',
   title: 'Global Site Settings',
   type: 'document',
   fields: [
-    // 👑 BRANDING SECTION
-    {
+    defineField({
       name: 'logo',
-      title: 'Boutique Logo',
+      title: 'Logo',
       type: 'image',
       options: { hotspot: true },
-      description: 'Upload your Raj Gharana Saree Centre logo here.'
-    },
-    // 🖼️ HERO BANNER SECTION (MULTIPLE IMAGES)
-    {
+    }),
+    defineField({
       name: 'heroTitle',
-      title: 'Hero Banner Title',
+      title: 'Hero Title',
       type: 'string',
-    },
-    {
+    }),
+    defineField({
       name: 'heroSubtitle',
-      title: 'Hero Banner Subtitle',
+      title: 'Hero Subtitle',
       type: 'string',
-    },
-    {
+    }),
+    defineField({
       name: 'heroImages',
-      title: 'Hero Auto-Scroll Images',
+      title: 'Hero Slider Images',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Add multiple images for the home page auto-scrolling slider.'
-    },
-    // 📸 OFFLINE STORE SECTION (MULTIPLE IMAGES)
-    {
+    }),
+    defineField({
       name: 'storeImages',
       title: 'Offline Store Images',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      description: 'Add multiple photos of your physical store for the bottom section.'
-    }
-  ]
-}
+    }),
+  ],
+})

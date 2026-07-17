@@ -7,8 +7,7 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   "storeImages": storeImages[].asset->url
 }`;
 
-// Baaki aapki homeProductsQuery aur homeCategoriesQuery jaisi hain waisi hi rahengi
-// 2. Homepage aur listing ke liye video file aur fabric swatch ke sath items fetch karne ki query
+// 2. Homepage aur listing ke liye items fetch karne ki query
 export const homeProductsQuery = `*[_type == "product"] | order(_createdAt desc)[0...12] {
   _id,
   title,
@@ -17,11 +16,14 @@ export const homeProductsQuery = `*[_type == "product"] | order(_createdAt desc)
   compareAtPrice,
   isNewArrival,
   isBestSeller,
+  rating,
+  reviewCount,
   description,
   "videoUrl": videoFile.asset->url,
-  colorVariants[] {
+  // ✨ Yahan variants se data nikal kar images[0] ko auto-swatch bana diya hai
+  "colorVariants": variants[] {
     colorName,
-    "swatchUrl": swatchImage.asset->url,
+    "swatchUrl": images[0].asset->url,
     "images": images[].asset->url,
     sizes[] {
       sizeLabel,
@@ -56,15 +58,24 @@ export const productDetailQuery = `*[_type == "product" && slug.current == $slug
   title,
   price,
   compareAtPrice,
+  rating,
+  reviewCount,
   description,
   "videoUrl": videoFile.asset->url,
-  colorVariants[] {
+  // ✨ Same yahan bhi variants se map karke images[0] ko auto-swatch kiya hai
+  "colorVariants": variants[] {
     colorName,
-    "swatchUrl": swatchImage.asset->url,
+    "swatchUrl": images[0].asset->url,
     "images": images[].asset->url,
     sizes[] {
       sizeLabel,
       stockStatus
     }
+  },
+  reviews[] {
+    reviewerName,
+    reviewRating,
+    comment,
+    "realPhotos": realPhotos[].asset->url
   }
 }`;

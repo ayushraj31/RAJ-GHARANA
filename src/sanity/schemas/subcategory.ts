@@ -1,50 +1,35 @@
-import { Rule } from 'sanity';
+import { defineField, defineType } from 'sanity'
 
-export default {
+export default defineType({
   name: 'subcategory',
-  title: '🌸 Subcategories Catalog',
+  title: 'Sub Category',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'title',
-      title: 'Subcategory Collection Name',
+      title: 'Sub Category Name',
       type: 'string',
-      description: 'Example: Pure Silk Saree, Banarasi Masterpieces, Party Wear Luxury',
-      validation: (Rule: Rule) => Rule.required().error('Subcategory title is required.'),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'slug',
-      title: '🔄 URL Web Address',
+      title: 'Slug',
       type: 'slug',
-      description: 'Just click the "Generate" button after writing the name.',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
-      validation: (Rule: Rule) => Rule.required(),
-    },
-    {
+      options: { source: 'title', maxLength: 96 },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'image',
-      title: '📸 Collection Cover Photo',
+      title: 'Sub Category Image',
       type: 'image',
-      description: 'Upload the dynamic showcase picture for this interior card grid block.',
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule: Rule) => Rule.required().error('Collection card image is highly necessary.'),
-    },
-    {
-      name: 'description',
-      title: 'Curated Collection Note',
-      type: 'text',
-      description: 'Write a brief dynamic line about this specific design style.',
-    }
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'category',
+      title: 'Belongs to Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
+      validation: (Rule) => Rule.required(),
+    }),
   ],
-  preview: {
-    select: {
-      title: 'title',
-      subtitle: 'description',
-      media: 'image',
-    },
-  },
-};
+})

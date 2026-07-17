@@ -3,42 +3,60 @@
 @tailwind utilities;
 
 @layer base {
+  /* ==========================================================
+     1. COLOR PALETTE DEFINITION (Yahan se saare rang badlo)
+     ========================================================== */
   :root {
-    --color-neutral-50: #fafafa;
+    /* 🔴 FIXED: Iska naam --color-neutral-50 kar diya hai aur aapka chunao kiya hua Maroon (#851e2c) set hai! */
+    --color-neutral-100:rgb(254, 192, 255)3; 
+    
+    /* ▫️ Secondary Light Color: Cards ya sections ke background ke liye. */
     --color-neutral-100: #f5f5f5;
-    --color-neutral-900: #171717;
-    --color-gold-400: #d4af37;
-    --color-gold-500: #b59410;
+    
+    /* 🖤 Text & Dark Elements: Poori website ke text aur headings ka main dark color. */
+    --color-neutral-900: #0a0a0a;
+    
+    /* 👑 Premium Accent Colors (Gold/Amber): Buttons, active elements ke liye. */
+    --color-gold-400: #d4af37; /* Halka chamkila sona */
+    --color-gold-500: #b59410; /* Thoda gehra sona */
   }
 
+  /* ==========================================================
+     2. GLOBAL BODY STYLE
+     ========================================================== */
   body {
-    background-color: var(--color-neutral-50);
-    color: var(--color-neutral-900);
-    overflow-x: hidden;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--color-neutral-50); /* Ab ye upar wale maroon rang ko sahi se pakad lega */
+    color: var(--color-neutral-900);            
+    overflow-x: hidden;                         
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11"; 
   }
 
-  /* Premium Elegant Minimal Scrollbar */
+  /* ==========================================================
+     3. PREMIUM MINIMAL SCROLLBAR
+     ========================================================== */
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 5px;  
+    height: 5px; 
   }
   
   ::-webkit-scrollbar-track {
-    background: var(--color-neutral-50);
+    background: var(--color-neutral-50); 
   }
   
   ::-webkit-scrollbar-thumb {
-    background: #d1d1d6;
-    border-radius: 9999px;
+    background: #d1d1d6; 
+    border-radius: 9999px; 
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #a1a1aa;
+    background: #a1a1aa; 
   }
 }
 
 @layer components {
+  /* ==========================================================
+     4. CUSTOM REUSABLE CLASSES
+     ========================================================== */
   .glass-header {
     @apply bg-neutral-50/75 backdrop-blur-md border-b border-neutral-200/40 sticky top-0 z-50 transition-all duration-300;
   }

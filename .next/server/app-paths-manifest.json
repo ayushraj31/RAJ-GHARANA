@@ -1,7 +1,7 @@
 {
-  "/(shop)/shop/women/[category]/page": "app/(shop)/shop/women/[category]/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/(shop)/shop/women/[category]/[subcategory]/page": "app/(shop)/shop/women/[category]/[subcategory]/page.js",
-  "/page": "app/page.js",
   "/(shop)/product/[slug]/page": "app/(shop)/product/[slug]/page.js",
-  "/studio/[[...tool]]/page": "app/studio/[[...tool]]/page.js"
+  "/studio/[[...tool]]/page": "app/studio/[[...tool]]/page.js",
+  "/page": "app/page.js"
 }

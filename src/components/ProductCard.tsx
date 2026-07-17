@@ -22,6 +22,9 @@ interface ProductCardProps {
     isTrending?: boolean;
     isBestSeller?: boolean;
     colorVariants: ColorVariant[];
+    // ✨ Step 2: Naye fields types mein add kiye
+    rating?: number;
+    reviewCount?: number;
   };
 }
 
@@ -113,6 +116,17 @@ export default function ProductCard({ product }: ProductCardProps) {
             Style: {activeVariant?.colorName || 'Classic'}
           </p>
         </Link>
+
+        {/* ✨ DYNAMIC RATING & REVIEWS BOX */}
+        {product.rating && product.rating > 0 && (
+          <div className="mt-1.5 flex items-center space-x-1 text-xs text-neutral-700">
+            <span className="text-amber-600 font-medium">★ {product.rating.toFixed(1)}</span>
+            <span className="text-neutral-300">|</span>
+            <span className="text-neutral-400 text-[10px] font-light">
+              ({product.reviewCount || 0} {product.reviewCount === 1 ? 'Review' : 'Reviews'})
+            </span>
+          </div>
+        )}
 
         {/* PRICING BLOCK WITH STRIKE-THROUGH */}
         <div className="mt-2 flex items-baseline space-x-2">

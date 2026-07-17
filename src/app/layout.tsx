@@ -1,11 +1,12 @@
+'use client';
+
+import React from 'react';
 import './globals.css';
-import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
-import { SHOP_CONFIG } from '@/config/shop.config';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/context/CartContext';
-import CartSidebar from '@/components/CartSidebar'; // Hum abhi isko step 3 mein banayenge
+import CartSidebar from '@/components/CartSidebar';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -16,17 +17,6 @@ const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-serif',
 });
-
-export const metadata: Metadata = {
-  title: {
-    default: "Raj Gharana Saree Centre gorari",
-    template: "%s | Raj Gharana Saree Centre gorari"
-  },
-  description: "Best saree and boutique collection in Gorari",
-  verification: {
-    google: "V-8mOU6XjsrGxh_GaCaLoE_Fg4l-oY_UzX9-38lF9qI",
-  },
-};
 
 export interface RootLayoutProps {
   children: React.ReactNode;
@@ -45,8 +35,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {/* Sliding Cart Panel (Myntra Drawer style) */}
           <CartSidebar />
           
-          {/* Content Area */}
-          <main className="flex-grow pt-24">
+          {/* ✨ FIXED: main tag se pt-24 ko 100% remove kar diya hai taaki home page top se merge ho sake */}
+          <main className="flex-grow">
             {children}
           </main>
           

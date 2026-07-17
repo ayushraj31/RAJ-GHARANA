@@ -1,58 +1,33 @@
-import { Rule } from 'sanity';
+import { defineField, defineType } from 'sanity'
 
-export default {
+export default defineType({
   name: 'category',
-  title: '⚜️ Main Categories',
+  title: 'Category',
   type: 'document',
   fields: [
-    {
+    defineField({
       name: 'title',
       title: 'Category Name',
       type: 'string',
-      description: 'Example: Women, Men, Accessories',
-      validation: (Rule: Rule) => Rule.required().error('Category name is absolutely necessary.'),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'slug',
-      title: '🔄 URL Web Address',
+      title: 'Slug',
       type: 'slug',
-      description: 'Just click the "Generate" button after writing the name.',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
-      validation: (Rule: Rule) => Rule.required(),
-    },
-    {
+      options: { source: 'title', maxLength: 96 },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'description',
-      title: 'Luxury Introduction Description',
+      title: 'Description',
       type: 'text',
-      description: 'Write a premium summary line for this collection.',
-    },
-    {
+    }),
+    defineField({
       name: 'image',
-      title: '📸 Beautiful Showcase Image',
+      title: 'Category Image',
       type: 'image',
-      description: 'Upload the premium photo for the home page arched frame shape.',
-      options: {
-        hotspot: true,
-      },
-      validation: (Rule: Rule) => Rule.required().error('Showcase image is highly recommended.'),
-    },
-    {
-      name: 'subcategories',
-      title: '🔗 Linked Subcategories',
-      type: 'array',
-      description: 'Add multiple dynamic inner variants inside this category block.',
-      of: [{ type: 'reference', to: [{ type: 'subcategory' }] }],
-    }
+      options: { hotspot: true },
+    }),
   ],
-  // Owner ke interactive view ke liye preview setup
-  preview: {
-    select: {
-      title: 'title',
-      subtitle: 'description',
-      media: 'image',
-    },
-  },
-};
+})

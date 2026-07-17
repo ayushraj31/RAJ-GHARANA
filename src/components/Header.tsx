@@ -40,66 +40,56 @@ export default function Header() {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-white border-b border-neutral-200/60 shadow-sm py-2 md:py-3' 
-          : 'bg-transparent py-3 md:py-4'
+          ? 'bg-white border-b border-neutral-200/60 shadow-sm py-2' 
+          : 'bg-transparent py-4'
       }`}
     >
-      {/* MAIN NAVBAR TOP ROW */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-3 items-center">
+      {/* ✨ Mobile space badhane ke liye custom grid fractions use kiye hain */}
+      <div className="max-w-7xl mx-auto px-3 md:px-6 grid grid-cols-[0.8fr_1.4fr_0.8fr] md:grid-cols-3 items-center">
         
-        {/* 1. LEFT SIDE: DESKTOP ONLY LINKS */}
-        <nav className="hidden md:flex items-center space-x-6 text-left">
+        {/* 1. LEFT SIDE: ONLY NEW ARRIVALS */}
+        <nav className="flex items-center text-left">
           <button 
             onClick={() => handleScrollToSection('new-arrivals')}
-            className={`text-xs tracking-widest uppercase font-medium transition-colors cursor-pointer ${
+            className={`text-[10px] md:text-[11px] tracking-wider md:tracking-[0.18em] uppercase font-medium transition-colors cursor-pointer whitespace-nowrap ${
               isScrolled ? 'text-neutral-800 hover:text-amber-700' : 'text-white/95 hover:text-amber-300'
             }`}
           >
             New Arrivals
           </button>
-          <button 
-            onClick={() => handleScrollToSection('best-sellers')}
-            className={`text-xs tracking-widest uppercase font-medium transition-colors cursor-pointer ${
-              isScrolled ? 'text-neutral-800 hover:text-amber-700' : 'text-white/95 hover:text-amber-300'
-            }`}
-          >
-            Best Sellers
-          </button>
         </nav>
 
-        {/* Mobile Spacer to balance the grid layout */}
-        <div className="md:hidden w-6" />
-
-        {/* 2. CENTER: BRANDING LOGO & NAME */}
-        <div className="flex justify-center items-center text-center">
-          <Link href="/" className="flex items-center space-x-2 md:space-x-3 group max-w-full">
-            <div className="w-7 h-7 md:w-8 md:h-8 overflow-hidden flex-shrink-0 bg-white rounded-full p-1 shadow-sm transition-transform duration-300 group-hover:scale-105">
+        {/* 2. CENTER: LOGO LEFT & TEXT BLOCK CENTERED & FIXED MIDDLE */}
+        <div className="flex justify-center items-center">
+          <Link href="/" className="flex items-center space-x-2 group max-w-full text-center">
+            {/* Logo container container */}
+            <div className="w-7 h-7 md:w-9 md:h-9 overflow-hidden flex-shrink-0 bg-white rounded-full p-1 shadow-sm transition-transform duration-300 group-hover:scale-105">
               <img 
                 src="/logo.png" 
                 alt="Raj Gharana Logo" 
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="flex flex-col text-center items-center overflow-hidden">
+            
+            {/* ✨ FIXED: text-center aur items-center laga kar dono line ko ek dusre ke middle me align kiya hai */}
+            <div className="flex flex-col text-center items-center justify-center overflow-hidden">
               <span 
-                className={`font-sans text-xs sm:text-sm md:text-base tracking-[0.15em] md:tracking-[0.2em] font-light whitespace-nowrap transition-colors duration-300 uppercase ${
-                  isScrolled ? 'text-neutral-900 group-hover:text-amber-700' : 'text-white drop-shadow-md group-hover:text-amber-300'
-                }`}
+                className={`font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.08em] md:tracking-[0.16em] font-light whitespace-nowrap transition-colors duration-300 uppercase leading-none`}
+                style={{ color: isScrolled ? 'var(--color-neutral-900)' : '#ffffff' }}
               >
-                {SHOP_CONFIG.brandName}
+                {SHOP_CONFIG.brandName.split(' ')[0]} {SHOP_CONFIG.brandName.split(' ')[1]}
               </span>
               <span 
-                className={`text-[6px] md:text-[8px] tracking-[0.25em] uppercase font-medium -mt-0.5 transition-colors duration-300 text-center mx-auto block whitespace-nowrap ${
-                  isScrolled ? 'text-neutral-500' : 'text-neutral-200/90 drop-shadow-sm'
-                }`}
+                className={`font-sans text-[7px] md:text-[9px] tracking-[0.1em] md:tracking-[0.18em] uppercase font-medium mt-1 transition-colors duration-300 leading-none block text-center`}
+                style={{ color: isScrolled ? '#737373' : 'rgba(245,245,245,0.85)' }}
               >
-                {SHOP_CONFIG.tagline}
+                {SHOP_CONFIG.brandName.split(' ').slice(2).join(' ')}
               </span>
             </div>
           </Link>
         </div>
 
-        {/* 3. RIGHT SIDE: CART */}
+        {/* 3. RIGHT SIDE: CART UTILITY */}
         <div className="flex justify-end items-center">
           <button 
             onClick={() => setIsCartOpen(true)} 
@@ -119,28 +109,8 @@ export default function Header() {
             )}
           </button>
         </div>
-      </div>
 
-      {/* ✨ NEW MOBILE-ONLY ROW: Clean sub-links bar underneath branding */}
-      <div className="md:hidden w-full flex justify-center items-center space-x-6 mt-1.5 pt-1 border-t border-white/10 md:border-none">
-        <button 
-          onClick={() => handleScrollToSection('new-arrivals')}
-          className={`text-[9px] tracking-widest uppercase font-medium transition-colors cursor-pointer ${
-            isScrolled ? 'text-neutral-700 hover:text-amber-700' : 'text-white/90 hover:text-amber-300'
-          }`}
-        >
-          New Arrivals
-        </button>
-        <button 
-          onClick={() => handleScrollToSection('best-sellers')}
-          className={`text-[9px] tracking-widest uppercase font-medium transition-colors cursor-pointer ${
-            isScrolled ? 'text-neutral-700 hover:text-amber-700' : 'text-white/90 hover:text-amber-300'
-          }`}
-        >
-          Best Sellers
-        </button>
       </div>
-
     </header>
   );
 }

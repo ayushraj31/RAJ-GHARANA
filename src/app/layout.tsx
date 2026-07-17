@@ -18,8 +18,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: `${SHOP_CONFIG.brandName} | ${SHOP_CONFIG.tagline}`,
-  description: 'Premium ethnic couture, lehengas, sarees, and luxury bridal wear.',
+  title: {
+    default: "Raj Gharana Saree Centre gorari",
+    template: "%s | Raj Gharana Saree Centre gorari"
+  },
+  description: "Best saree and boutique collection in Gorari",
+  verification: {
+    google: "V-8mOU6XjsrGxh_GaCaLoE_Fg4l-oY_UzX9-38lF9qI",
+  },
 };
 
 export interface RootLayoutProps {

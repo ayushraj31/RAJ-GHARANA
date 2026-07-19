@@ -11,15 +11,20 @@ export default async function SubCategoryProductsPage({ params }: Props) {
   const resolvedParams = await params;
   const { category, subcategory } = resolvedParams;
 
-  // 1. Sanity se saare authentic products fetch karna
-  const allProducts = await client.fetch(homeProductsQuery) || [];
+  // ✨ FIXED: cache: 'no-store' add kiya taaki live data refresh ho sake
+  const allProducts = await client.fetch(homeProductsQuery, {}, { cache: 'no-store' }) || [];
 
-  // 2. Dynamic Subcategory Routing Match Pipeline
-  // Abhi hum data listing validation control setup kar rahe hain
+  // 🎯 DYNAMIC FILTER PIPELINE
   const filteredProducts = allProducts.filter((product: any) => {
-    // Agar product ke andar explicit subcategory reference map ho toh match karein,
-    // filhal safety mesh ke liye product range default render ho rahi hai
-    return true; 
+    // URL ka subcategory slug nikalte hain (lowercase)
+    const currentUrlSubcat = subcategory.toLowerCase();
+    
+    // Product ke dono possible reference slugs ko check karte hain
+    const prodSubcat1 = product.subcategorySlug?.toLowerCase();
+    const prodSubcat2 = product.subCategorySlug?.toLowerCase();
+
+    // Sirf wahi product return hoga jo is specific subcategory se match karega
+    return prodSubcat1 === currentUrlSubcat || prodSubcat2 === currentUrlSubcat;
   });
 
   return (

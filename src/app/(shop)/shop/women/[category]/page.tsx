@@ -12,11 +12,15 @@ export default async function CategoryPage({ params }: Props) {
   const resolvedParams = await params;
   const currentCatSlug = resolvedParams.category.toLowerCase();
 
-  // Sanity se live category data aur uske linked subcategories fetch karna
-  const categoryData = await client.fetch(categoryDetailsQuery, { categorySlug: currentCatSlug });
+  // ✨ FIXED: cache: 'no-store' force option lagaya hai taaki database update turant reflect ho
+  const categoryData = await client.fetch(
+    categoryDetailsQuery, 
+    { categorySlug: currentCatSlug },
+    { cache: 'no-store' }
+  );
 
   if (!categoryData) {
-    return notFound(); // Agar owner ne ye category nahi banayi toh 404 secure window link automatically
+    return notFound(); 
   }
 
   return (

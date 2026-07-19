@@ -16,9 +16,10 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const settingsData = await client.fetch(siteSettingsQuery);
-        const productsData = await client.fetch(homeProductsQuery);
-        const categoriesData = await client.fetch(homeCategoriesQuery);
+        // ✨ FIXED: Cache 'no-store' bypass lagaya hai taaki Sanity ka dynamic data block na ho
+        const settingsData = await client.fetch(siteSettingsQuery, {}, { cache: 'no-store' });
+        const productsData = await client.fetch(homeProductsQuery, {}, { cache: 'no-store' });
+        const categoriesData = await client.fetch(homeCategoriesQuery, {}, { cache: 'no-store' });
         
         if (settingsData) setSettings(settingsData);
         if (productsData) setProducts(productsData);
@@ -48,7 +49,6 @@ export default function HomePage() {
     : ["https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1600"];
 
   return (
-    // ✨ DYNAMIC FIXED: Hardcoded bg-[#FCFBF7] ko hata kar css variable se connect kar diya hai
     <div className="w-full overflow-x-hidden p-0 m-0" style={{ backgroundColor: 'var(--color-neutral-50)' }}>
       
       {/* HERO BANNER BLOCK */}
@@ -73,7 +73,6 @@ export default function HomePage() {
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
-                // ✨ DYNAMIC FIXED: Active slider dot ka color gold variable se connect kar diya hai
                 className="h-1 rounded-full transition-all duration-300"
                 style={{
                   width: currentSlide === i ? '24px' : '6px',
@@ -85,12 +84,12 @@ export default function HomePage() {
         )}
       </div>
 
+      {/* ✨ FIXED: Categories array load validation filter fallback pass kiya hai */}
       <div className="pt-10">
-        <ArchedCategoryScroll categories={categories} />
+        <ArchedCategoryScroll categories={categories || []} />
       </div>
 
       {/* New Arrivals Section */}
-      {/* ✨ DYNAMIC FIXED: Text color ko global heading variable se tie kar diya hai */}
       <section id="new-arrivals" className="max-w-7xl mx-auto px-6 pt-16 scroll-mt-24" style={{ color: 'var(--color-neutral-900)' }}>
         <div className="text-center mb-12">
           <h2 className="font-serif text-2xl md:text-3xl font-light">New Arrivals Collection</h2>

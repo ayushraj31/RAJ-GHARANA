@@ -7,20 +7,24 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   "storeImages": storeImages[].asset->url
 }`;
 
-// 2. Homepage aur listing ke liye items fetch karne ki query
+// 2. Homepage aur listing ke liye items fetch karne ki query (WITH SUB-CATEGORY SLUG RESOLUTION)
 export const homeProductsQuery = `*[_type == "product"] | order(_createdAt desc)[0...12] {
   _id,
   title,
   slug,
   price,
-  compareAtPrice,
+  "compareAtPrice": coalesce(originalPrice, mrp, compareAtPrice),
   isNewArrival,
   isBestSeller,
   rating,
   reviewCount,
   description,
   "videoUrl": videoFile.asset->url,
-  // ✨ Yahan variants se data nikal kar images[0] ko auto-swatch bana diya hai
+  
+  // ✨ FIXED: Product ke andar linked subcategory ka slug resolve kar rahe hain filter lagane ke liye
+  "subcategorySlug": subcategory->slug.current,
+  "subCategorySlug": subCategory->slug.current,
+
   "colorVariants": variants[] {
     colorName,
     "swatchUrl": images[0].asset->url,
@@ -32,19 +36,30 @@ export const homeProductsQuery = `*[_type == "product"] | order(_createdAt desc)
   }
 }`;
 
-// 3. Home page par saare categories ko dynamic gumbad elements render karne ke liye query
+// 3. Home page par saare categories aur unke subcategories ko reverse-mapping se fetch karne ki query
 export const homeCategoriesQuery = `*[_type == "category"] {
+  _id,
   title,
   "slug": slug.current,
-  "imageUrl": image.asset->url
+  "imageUrl": image.asset->url,
+  
+  // ✨ THE ULTIMATE FIX: Sub-category ke andar jo "Belongs to Category" reference hai, ye usse filter karega
+  // Agar aapke schema me field ka naam belongsToCategory ya category hai, ye dono ko check karega
+  "subcategories": *[_type == "subcategory" && (belongsToCategory._ref == ^._id || category._ref == ^._id || references(^._id))] {
+    title,
+    "slug": slug.current
+  }
 }`;
 
-// 4. Ek specific main category aur uske andar ke pure subcategory boxes uthane ki query
+// 4. Ek specific main category aur uske andar ke pure subcategory boxes uthane ki query (REVERSE MAPPED)
 export const categoryDetailsQuery = `*[_type == "category" && slug.current == $categorySlug][0] {
+  _id,
   title,
   description,
   "imageUrl": image.asset->url,
-  subcategories[]-> {
+  
+  // ✨ THE ULTIMATE FIX: Subcategory listing page ke liye bhi reverse reference lock kar diya hai
+  "subcategories": *[_type == "subcategory" && (belongsToCategory._ref == ^._id || category._ref == ^._id || references(^._id))] {
     title,
     "slug": slug.current,
     description,
@@ -57,12 +72,12 @@ export const productDetailQuery = `*[_type == "product" && slug.current == $slug
   _id,
   title,
   price,
-  compareAtPrice,
+  // ✨ FIXED: Yahan bhi pricing mapping fix kar di hai
+  "compareAtPrice": coalesce(originalPrice, mrp, compareAtPrice),
   rating,
   reviewCount,
   description,
   "videoUrl": videoFile.asset->url,
-  // ✨ Same yahan bhi variants se map karke images[0] ko auto-swatch kiya hai
   "colorVariants": variants[] {
     colorName,
     "swatchUrl": images[0].asset->url,

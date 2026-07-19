@@ -75,13 +75,19 @@ export default defineType({
       type: 'boolean',
       initialValue: true,
     }),
-   defineField({
-  name: 'sizes',
-  title: 'Available Sizes',
-  type: 'array',
-  of: [{ type: 'string' }],
-  description: 'Har size ke liye "Add item" dabao aur khud type karo (jaise: S, M, L, 32, Free Size)',
-}),
+    defineField({
+    name: 'isBestSeller',
+    title: 'Is Best Seller?',
+    type: 'boolean',
+    initialValue: false, // Default false rahega
+    }),
+    defineField({
+    name: 'sizes',
+    title: 'Available Sizes',
+    type: 'array',
+    of: [{ type: 'string' }],
+    description: 'Har size ke liye "Add item" dabao aur khud type karo (jaise: S, M, L, 32, Free Size)',
+    }),
     defineField({
       name: 'description',
       title: 'Description / Fabric Specs',

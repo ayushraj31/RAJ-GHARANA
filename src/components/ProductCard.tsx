@@ -22,7 +22,6 @@ interface ProductCardProps {
     isTrending?: boolean;
     isBestSeller?: boolean;
     colorVariants: ColorVariant[];
-    // ✨ Step 2: Naye fields types mein add kiye
     rating?: number;
     reviewCount?: number;
   };
@@ -33,14 +32,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [activeVariantIdx, setActiveVariantIdx] = useState(0);
   const activeVariant = product.colorVariants?.[activeVariantIdx];
 
-  // Auto Discount percentage calculate karne ke liye
+  // Auto Discount percentage calculation check
   const calculateDiscount = () => {
-    if (!product.compareAtPrice || product.compareAtPrice <= product.price) return null;
+    if (!product.compareAtPrice || Number(product.compareAtPrice) <= Number(product.price)) return null;
     const discount = ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100;
     return Math.round(discount);
   };
 
   const discountPercent = calculateDiscount();
+  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
 
   return (
     <div className="group flex flex-col bg-white overflow-hidden relative transition-all duration-300">
@@ -83,11 +83,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* DETAILED INFORMATION BOX */}
       <div className="pt-4 pb-2 flex flex-col flex-grow text-left">
         
-        {/* DYNAMIC COLOR DOTS SELECTOR (Koskii Premium Style) */}
+        {/* DYNAMIC COLOR DOTS SELECTOR */}
         {product.colorVariants && product.colorVariants.length > 1 && (
           <div className="flex items-center space-x-2 mb-2.5 overflow-x-auto no-scrollbar py-0.5">
             {product.colorVariants.map((variant, idx) => {
-              // Agar admin ne hex code diya hai toh woh use karein, nahi toh default gray color dot dikhayein
               const dotBg = variant.colorHex || '#d4d4d8';
               return (
                 <button
@@ -117,7 +116,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </p>
         </Link>
 
-        {/* ✨ DYNAMIC RATING & REVIEWS BOX */}
+        {/* DYNAMIC RATING & REVIEWS BOX */}
         {product.rating && product.rating > 0 && (
           <div className="mt-1.5 flex items-center space-x-1 text-xs text-neutral-700">
             <span className="text-amber-600 font-medium">★ {product.rating.toFixed(1)}</span>
@@ -128,15 +127,21 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        {/* PRICING BLOCK WITH STRIKE-THROUGH */}
-        <div className="mt-2 flex items-baseline space-x-2">
+        {/* PRICING BLOCK WITH STRIKE-THROUGH & OFF LABEL */}
+        {/* ✨ FIXED: Yahan logic ko clean up kiya hai aur discount tags ko side by side inline lock kiya hai */}
+        <div className="mt-2 flex items-baseline space-x-2 font-sans flex-wrap gap-y-1">
           <span className="text-sm font-semibold text-neutral-900">
             ₹{product.price.toLocaleString('en-IN')}
           </span>
-          {product.compareAtPrice && product.compareAtPrice > product.price && (
-            <span className="text-xs text-neutral-400 line-through">
-              ₹{product.compareAtPrice.toLocaleString('en-IN')}
-            </span>
+          {hasDiscount && (
+            <>
+              <span className="text-xs text-neutral-400 line-through">
+                ₹{product.compareAtPrice?.toLocaleString('en-IN')}
+              </span>
+              <span className="text-[10px] font-medium tracking-wide text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+                ({discountPercent}% OFF)
+              </span>
+            </>
           )}
         </div>
 
